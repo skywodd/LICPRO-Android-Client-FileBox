@@ -1,18 +1,18 @@
 package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
-import fr.licpro.filebox.dto.response.TokenDto;
+import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
 
 
 /**
  * Method to Sync the startUp data
  */
-public class ConnectionSync extends AbstractSync<TokenDto> {
+public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 
 	
 	@Override
-	protected TokenDto execute(final IRestClient pRestClient) throws RetrofitError {
+	protected FileboxAuthToken execute(final IRestClient pRestClient) throws RetrofitError {
 		return null;
 	}
 

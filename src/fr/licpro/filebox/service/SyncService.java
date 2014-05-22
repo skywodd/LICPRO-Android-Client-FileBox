@@ -1,43 +1,78 @@
+/*
+ * This file is part of LICPRO-Android-Client-FileBox.
+ *
+ * LICPRO-Android-Client-FileBox is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LICPRO-Android-Client-FileBox is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LICPRO-Android-Client-FileBox.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package fr.licpro.filebox.service;
 
+import retrofit.RestAdapter;
+import retrofit.android.AndroidLog;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
+import fr.licpro.filebox.service.json.JacksonConverter;
 import android.app.IntentService;
 import android.content.Intent;
-
+import android.util.Log;
 
 /**
- * Service for sync data
+ * Background synchronization service. Synchronize files and folders to and from
+ * the FileBox server on Intent request.
+ * 
+ * @author Skywodd
  */
-public class SyncService extends IntentService {
-	/**
-	 * SyncService Tag for Log 
-	 */
-	private static final String TAG = SyncService.class.getSimpleName();
-	
+public class SyncService extends IntentService implements
+		FileboxRuntimeConstants {
+
 	/**
 	 * Data in the intent
 	 */
 	public static final String SYNC_CLASS_INTENT = "fr.licpro.filebox.syncData";
 
 	/**
-	 * Client rest
+	 * API REST client instance.
 	 */
 	protected IRestClient mRestClient;
 
 	/**
-	 * Service constructor
+	 * Default constructor of the SyncService class.
 	 */
 	public SyncService() {
-		super(SyncService.class.getSimpleName());
-		
-		// TODO create RestClient @see https://github.com/square/retrofit/blob/master/retrofit-samples/github-client/src/main/java/com/example/retrofit/GitHubClient.java
-		//....
-	
+		super("SyncService");
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		Log.i(LOGCAT_TAG, "SyncService::onCreate()");
+
+		/* Build the REST adapter */
+		RestAdapter restAdapter = new RestAdapter.Builder()
+				.setConverter(new JacksonConverter()).setErrorHandler(null)
+				.setLog(new AndroidLog(LOGCAT_TAG))
+				.setLogLevel(RestAdapter.LogLevel.BASIC).setEndpoint(API_URL)
+				.build();
+
+		/* Create the API REST client */
+		mRestClient = restAdapter.create(IRestClient.class);
 	}
 
 	@Override
 	protected void onHandleIntent(final Intent pIntent) {
+		Log.i(LOGCAT_TAG, "SyncService::onHandleIntent()");
 
 		ISync sync = (ISync) pIntent.getSerializableExtra(SYNC_CLASS_INTENT);
 		sync.execute(getApplicationContext(), mRestClient);
 	}
+
 }
