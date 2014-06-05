@@ -1,5 +1,21 @@
-package fr.licpro.filebox.service.sync;
+/*
+ * This file is part of LICPRO-Android-Client-FileBox.
+ *
+ * LICPRO-Android-Client-FileBox is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LICPRO-Android-Client-FileBox is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LICPRO-Android-Client-FileBox.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
 import android.content.Context;
@@ -10,8 +26,9 @@ import fr.licpro.filebox.service.ISync;
  * Abstract sync class
  */
 public abstract class AbstractSync<T> implements ISync {
+	
 	/**
-	 * 
+	 * Serialization UID.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +41,7 @@ public abstract class AbstractSync<T> implements ISync {
 	 * The data object
 	 */
 	protected T mData;
-	
+
 	/**
 	 * Application Context
 	 */
@@ -32,15 +49,18 @@ public abstract class AbstractSync<T> implements ISync {
 
 	/**
 	 * Implement this method to perform your custom Task
-	 *
-	 * Success and Error handling can be performed by
-	 * overriding either onSuccess() or the onError exception handler
+	 * 
+	 * Success and Error handling can be performed by overriding either
+	 * onSuccess() or the onError exception handler
 	 */
-	protected abstract T execute(final IRestClient pRestClient) throws RetrofitError;
+	protected abstract T execute(final IRestClient pRestClient)
+			throws RetrofitError;
 
 	/**
 	 * Method to start the current Sync
-	 * @param pRestClient the rest client
+	 * 
+	 * @param pRestClient
+	 *            the rest client
 	 * @return true if they are no error false otherwise
 	 */
 	@Override
@@ -56,15 +76,17 @@ public abstract class AbstractSync<T> implements ISync {
 		}
 		return success;
 	}
-	
+
 	/**
 	 * Success method called when no error was found
 	 */
 	protected abstract void onSuccess();
-	
+
 	/**
-	 *  Error method called when exception was throw
-	 * @param e Exception
+	 * Error method called when exception was throw
+	 * 
+	 * @param e
+	 *            Exception
 	 */
 	protected abstract void onError(Exception e);
 

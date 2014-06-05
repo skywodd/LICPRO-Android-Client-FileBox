@@ -51,6 +51,11 @@ public class SyncService extends IntentService implements
 		super("SyncService");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.IntentService#onCreate()
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -67,11 +72,19 @@ public class SyncService extends IntentService implements
 		mRestClient = restAdapter.create(IRestClient.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
+	 */
 	@Override
 	protected void onHandleIntent(final Intent pIntent) {
 		Log.i(LOGCAT_TAG, "SyncService::onHandleIntent()");
 
+		/* Get the sync request */
 		ISync sync = (ISync) pIntent.getSerializableExtra(SYNC_CLASS_INTENT);
+		
+		/* Execute the sync request */
 		sync.execute(getApplicationContext(), mRestClient);
 	}
 
