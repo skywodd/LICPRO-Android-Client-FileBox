@@ -18,6 +18,13 @@
 package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Trace;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import fr.licpro.filebox.R;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
 
@@ -31,6 +38,49 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 */
 	private static final long serialVersionUID = -3470928285752718451L;
 
+	/**
+	 * User Login.
+	 */
+	private String mLogin;
+
+	/**
+	 * User Password.
+	 */
+	private String mPassword;
+
+	/**
+	 * SharedPreferences for Token.
+	 */
+	private SharedPreferences mSharedPrefs;
+
+	/**
+	 * Token Preference Name's.
+	 */
+	public static final String TOKEN_PREF = "fr.licpro.filebox.service.sync.ConnectionSync.ConnectionToken";
+
+	/**
+	 * Token Preference success value.
+	 */
+	public static final String TOKEN_SUCCESS = "fr.licpro.filebox.service.sync.ConnectionSync.CONNECTION_TOKEN_SUCCESS";
+
+	/**
+	 * Token Preference error value.
+	 */
+	public static final String TOKEN_ERROR = "fr.licpro.filebox.service.sync.ConnectionSync.CONNECTION_TOKEN_ERROR";
+	
+	/**
+	 *	Filter for Broadcast.
+	 */
+	public static final String BROADCAST_FILTER ="fr.licpro.filebox";
+	/*
+	 * Constructor.
+	 * 
+	 */
+	public ConnectionSync(String plogin,String ppassword) {
+		mLogin = plogin;
+		mPassword = ppassword;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,7 +91,7 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	@Override
 	protected FileboxAuthToken execute(final IRestClient pRestClient)
 			throws RetrofitError {
-		return null;
+		return pRestClient.getUserToken(mLogin, mPassword);
 	}
 
 	/*
@@ -52,6 +102,15 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	@Override
 	protected void onSuccess() {
 
+		Log.i("TRACE","onSuccess" );
+		mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+		SharedPreferences.Editor editor = mSharedPrefs.edit();
+		editor.putString(TOKEN_PREF, mData.getToken());
+		editor.commit();
+		
+		Intent it = new Intent(TOKEN_SUCCESS);
+		it.setPackage(BROADCAST_FILTER);
+		mContext.sendBroadcast(it);
 	}
 
 	/*
@@ -62,7 +121,10 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 */
 	@Override
 	protected void onError(Exception e) {
-
+		Log.i("TRACE","onError" );
+		Intent it = new Intent(TOKEN_ERROR);
+		it.setPackage(BROADCAST_FILTER);
+		mContext.sendBroadcast(it);
 	}
 
 }
