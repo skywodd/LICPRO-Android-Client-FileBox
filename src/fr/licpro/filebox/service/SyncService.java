@@ -63,7 +63,7 @@ public class SyncService extends IntentService implements
 
 		/* Build the REST adapter */
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				.setConverter(new JacksonConverter()).setErrorHandler(null)
+				.setConverter(new JacksonConverter())//.setErrorHandler(null)
 				.setLog(new AndroidLog(LOGCAT_TAG))
 				.setLogLevel(RestAdapter.LogLevel.BASIC).setEndpoint(API_URL)
 				.build();
