@@ -52,13 +52,13 @@ public class FileboxFile extends FileboxDtoBase {
 	 * True if the file is a folder.
 	 */
 	@JsonProperty("isFolder")
-	private Boolean mIsFolder;
+	private boolean mIsFolder;
 
 	/**
 	 * The file type.
 	 */
 	@JsonProperty("fileType")
-	private MimeTypeEnum mFileType;
+	private MimeTypeEnum mFileType = null;
 
 	/**
 	 * The last modification date (UNIX time stamp).
@@ -114,11 +114,11 @@ public class FileboxFile extends FileboxDtoBase {
 		mFileHash = fileHash;
 	}
 
-	public Boolean isFolder() {
+	public boolean isFolder() {
 		return mIsFolder;
 	}
 
-	public void setIsFolder(Boolean isFolder) {
+	public void setIsFolder(boolean isFolder) {
 		mIsFolder = isFolder;
 	}
 
