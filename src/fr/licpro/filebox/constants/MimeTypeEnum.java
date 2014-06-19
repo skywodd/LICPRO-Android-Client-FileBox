@@ -19,6 +19,8 @@ package fr.licpro.filebox.constants;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.licpro.filebox.R;
+
 /**
  * Enumeration of all known file types and associated mime types. Each entry are
  * composed of a mime type and a file extension (DOS format).
@@ -30,72 +32,72 @@ public enum MimeTypeEnum {
 	/**
 	 * Adobe PDF file.
 	 */
-	PDF("application/pdf", "pdf"),
+	PDF("application/pdf", "pdf", R.drawable.ic_launcher),
 
 	/**
 	 * Zip archive file.
 	 */
-	ZIP("application/zip", "zip"),
+	ZIP("application/zip", "zip", R.drawable.ic_launcher),
 
 	/**
 	 * MP3 audio file.
 	 */
-	MP3("audio/mpeg", "mp3"),
+	MP3("audio/mpeg", "mp3", R.drawable.ic_launcher),
 
 	/**
 	 * Microsoft Wave audio file.
 	 */
-	WAVE("audio/wav", "wav"),
+	WAVE("audio/wav", "wav", R.drawable.ic_launcher),
 
 	/**
 	 * Gif picture file.
 	 */
-	GIF("image/gif", "gif"),
+	GIF("image/gif", "gif", R.drawable.ic_launcher),
 
 	/**
 	 * Jpeg picture file.
 	 */
-	JPEG("image/jpeg", "jpg"),
+	JPEG("image/jpeg", "jpg", R.drawable.ic_launcher),
 
 	/**
 	 * Portable Network Graphics picture file.
 	 */
-	PNG("image/png", "png"),
+	PNG("image/png", "png", R.drawable.ic_launcher),
 
 	/**
 	 * Comma separated values file.
 	 */
-	CSV("text/csv", "csv"),
+	CSV("text/csv", "csv", R.drawable.ic_launcher),
 
 	/**
 	 * HTML file.
 	 */
-	HTML("text/html", "html"),
+	HTML("text/html", "html", R.drawable.ic_launcher),
 
 	/**
 	 * Plain text file.
 	 */
-	TEXT("text/plain", "txt"),
+	TEXT("text/plain", "txt", R.drawable.ic_launcher),
 
 	/**
 	 * XML document file.
 	 */
-	XML("text/xml", "xml"),
+	XML("text/xml", "xml", R.drawable.ic_launcher),
 
 	/**
 	 * MP4 video file.
 	 */
-	MP4("video/mp4", "mp4"),
+	MP4("video/mp4", "mp4", R.drawable.ic_launcher),
 
 	/**
 	 * Microsoft AVI video file.
 	 */
-	AVI("video/x-msvideo", "avi"),
+	AVI("video/x-msvideo", "avi", R.drawable.ic_launcher),
 
 	/**
 	 * Vcard contact file.
 	 */
-	VCARD("text/vcard", "vcf");
+	VCARD("text/vcard", "vcf", R.drawable.ic_launcher);
 
 	/**
 	 * The file mime-type.
@@ -108,6 +110,11 @@ public enum MimeTypeEnum {
 	private final String mExtension;
 
 	/**
+	 * The thumbnail image resource ID associated with the mime-type.
+	 */
+	private final int mThumbnailResourceId;
+
+	/**
 	 * Constructor of an element of MimeTypeEnum.
 	 * 
 	 * @param mimeType
@@ -115,9 +122,11 @@ public enum MimeTypeEnum {
 	 * @param extension
 	 *            The file extension associated with the mime-type.
 	 */
-	private MimeTypeEnum(final String mimeType, final String extension) {
+	private MimeTypeEnum(final String mimeType, final String extension,
+			final int thumbnailResourceId) {
 		mMimeType = mimeType;
 		mExtension = extension;
+		mThumbnailResourceId = thumbnailResourceId;
 	}
 
 	/**
@@ -162,6 +171,15 @@ public enum MimeTypeEnum {
 
 		/* Return the result */
 		return result;
+	}
+
+	/**
+	 * Get the thumbnail resource ID associated with the mime-type.
+	 * 
+	 * @return The thumbnail resource ID associated with the mime-type.
+	 */
+	public int getThumbnailResourceId() {
+		return mThumbnailResourceId;
 	}
 
 }
