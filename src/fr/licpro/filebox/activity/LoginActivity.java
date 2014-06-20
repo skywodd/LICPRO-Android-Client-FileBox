@@ -14,6 +14,7 @@ import android.widget.EditText;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import fr.licpro.filebox.R;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.service.SyncService;
 import fr.licpro.filebox.service.sync.ConnectionSync;
 
@@ -35,7 +36,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		mConnexion = (Button) findViewById(R.id.btn_login);
 		mConnexion.setOnClickListener(this);
-		registerReceiver(new TokenReceiver(), new IntentFilter(ConnectionSync.BROADCAST_FILTER));
+		registerReceiver(new TokenReceiver(), new IntentFilter(FileboxRuntimeConstants.BROADCAST_FILTER));
 	}
 
 	@Override

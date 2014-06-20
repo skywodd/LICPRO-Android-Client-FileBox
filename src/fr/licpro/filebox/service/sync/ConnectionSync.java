@@ -25,6 +25,7 @@ import android.os.Trace;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import fr.licpro.filebox.R;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
 
@@ -67,14 +68,10 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 * Token Preference error value.
 	 */
 	public static final String TOKEN_ERROR = "fr.licpro.filebox.service.sync.ConnectionSync.CONNECTION_TOKEN_ERROR";
+
 	
-	/**
-	 *	Filter for Broadcast.
-	 */
-	public static final String BROADCAST_FILTER ="fr.licpro.filebox";
 	/*
 	 * Constructor.
-	 * 
 	 */
 	public ConnectionSync(String plogin,String ppassword) {
 		mLogin = plogin;
@@ -109,7 +106,7 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 		editor.commit();
 		
 		Intent it = new Intent(TOKEN_SUCCESS);
-		it.setPackage(BROADCAST_FILTER);
+		it.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(it);
 	}
 
@@ -123,7 +120,7 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	protected void onError(Exception e) {
 		Log.i("TRACE","onError" );
 		Intent it = new Intent(TOKEN_ERROR);
-		it.setPackage(BROADCAST_FILTER);
+		it.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(it);
 	}
 
