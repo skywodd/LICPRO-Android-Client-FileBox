@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Error messages (localized FR) -->
+
+<resources>
+
+    <string name="error_bad_request">Requéte incorrect</string>
+    <string name="error_user_not_found">Utilisateur inconnu</string>
+    <string name="error_token_invalid">Token invalide</string>
+    <string name="error_file_not_found">Fichier introuvable</string>
+    <string name="error_login_exist">Utilisateur existant</string>
+    <string name="error_unknown_error">Erreur inconnue</string>
+
+</resources>
