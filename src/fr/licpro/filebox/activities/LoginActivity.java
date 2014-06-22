@@ -216,7 +216,8 @@ public class LoginActivity extends Activity implements OnClickListener,
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 		float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 		if (dpWidth >= 480) {
-			startActivity(new Intent(this, FilesListWithDetailsActivity.class));
+			//startActivity(new Intent(this, FilesListWithDetailsActivity.class));
+			startActivity(new Intent(this, FilesListActivity.class));
 		} else {
 			startActivity(new Intent(this, FilesListActivity.class));
 		}
