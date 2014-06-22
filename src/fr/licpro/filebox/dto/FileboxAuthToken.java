@@ -66,14 +66,4 @@ public class FileboxAuthToken extends FileboxServerError {
 		return mToken;
 	}
 
-	/**
-	 * Set the authentication token.
-	 * 
-	 * @param token
-	 *            The new authentication token.
-	 */
-	public void setToken(final String token) {
-		mToken = token;
-	}
-
 }

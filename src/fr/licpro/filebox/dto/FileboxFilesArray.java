@@ -61,27 +61,30 @@ public class FileboxFilesArray extends FileboxServerError {
 	 * 
 	 * @param files
 	 *            The list of files in this directory.
+	 * @param lastUpdate
+	 *            The last update date of this directory.
 	 */
-	public FileboxFilesArray(List<FileboxFile> files) {
+	public FileboxFilesArray(List<FileboxFile> files, Date lastUpdate) {
 		mFiles = files;
+		mLastUpdate = lastUpdate;
 	}
 
-	// TODO doc
-
+	/**
+	 * Get the list of files in this directory.
+	 * 
+	 * @return The list of files in this directory.
+	 */
 	public List<FileboxFile> getFilesList() {
 		return mFiles;
 	}
 
-	public void setFilesList(List<FileboxFile> listFile) {
-		mFiles = listFile;
-	}
-
+	/**
+	 * Get the last update date of this directory.
+	 * 
+	 * @return The last update date of this directory.
+	 */
 	public Date getLastUpdateDate() {
 		return mLastUpdate;
-	}
-
-	public void setLastUpdateDate(Date lastUpdate) {
-		mLastUpdate = lastUpdate;
 	}
 
 }

@@ -48,10 +48,10 @@ public abstract class FileboxServerError extends FileboxDtoBase {
 	private String mErrorMessageKey;
 
 	/**
-	 * The error message (human-readable).
+	 * The default error message (human-readable).
 	 */
 	@JsonProperty("errorDefaultMessage")
-	private String mErrorDefaultMessage;
+	private String mDefaultErrorMessage;
 
 	/**
 	 * Default constructor of the FileboxServerError class for the serialization
@@ -64,30 +64,18 @@ public abstract class FileboxServerError extends FileboxDtoBase {
 	 * Complete constructor of the FileboxServerError class for general purpose
 	 * uses.
 	 * 
-	 * @param error
-	 *            The error code as an FileboxErrorCodesEnum object.
-	 */
-	public FileboxServerError(final FileboxErrorCodesEnum error) {
-		this(error.getErrorCode(), error.getErrorDefaultMessage(), error
-				.getErrorMessageKey());
-	}
-
-	/**
-	 * Complete constructor of the FileboxServerError class for general purpose
-	 * uses.
-	 * 
 	 * @param errorCode
 	 *            The error code.
 	 * @param errorMessageKey
 	 *            The error message key (machine-readable).
-	 * @param errorDefaultMessage
-	 *            The error message (human-readable).
+	 * @param defaultErrorMessage
+	 *            The default error message (human-readable).
 	 */
-	public FileboxServerError(final String errorCode,
-			final String errorMessageKey, final String errorDefaultMessage) {
+	public FileboxServerError(final int errorCode,
+			final String errorMessageKey, final String defaultErrorMessage) {
+		mErrorCode = Integer.toString(errorCode);
 		mErrorMessageKey = errorMessageKey;
-		mErrorCode = errorCode;
-		mErrorDefaultMessage = errorDefaultMessage;
+		mDefaultErrorMessage = defaultErrorMessage;
 	}
 
 	/**
@@ -95,18 +83,8 @@ public abstract class FileboxServerError extends FileboxDtoBase {
 	 * 
 	 * @return The error code.
 	 */
-	public String getErrorCode() {
-		return mErrorCode;
-	}
-
-	/**
-	 * Set the error code.
-	 * 
-	 * @param errorCode
-	 *            The new error code.
-	 */
-	public void setErrorCode(String errorCode) {
-		mErrorCode = errorCode;
+	public int getErrorCode() {
+		return Integer.parseInt(mErrorCode);
 	}
 
 	/**
@@ -119,32 +97,23 @@ public abstract class FileboxServerError extends FileboxDtoBase {
 	}
 
 	/**
-	 * Set the error message key (machine-readable).
-	 * 
-	 * @param errorMessageKey
-	 *            The error message key (machine-readable).
-	 */
-	public void setErrorMessageKey(String errorMessageKey) {
-		mErrorMessageKey = errorMessageKey;
-	}
-
-	/**
 	 * Get the error message (human-readable).
 	 * 
 	 * @return The error message (human-readable).
 	 */
-	public String getErrorDefaultMessage() {
-		return mErrorDefaultMessage;
+	public String getDefaultErrorMessage() {
+		return mDefaultErrorMessage;
 	}
 
 	/**
-	 * Set the error message (human-readable).
+	 * Return the error as a FileboxErrorCodesEnum with localized error message
+	 * string support.
 	 * 
-	 * @param errorDefaultMessage
-	 *            The error message (human-readable).
+	 * @return The error as a FileboxErrorCodesEnum, or null if the error is
+	 *         unknown.
 	 */
-	public void setErrorDefaultMessage(String errorDefaultMessage) {
-		mErrorDefaultMessage = errorDefaultMessage;
+	public FileboxErrorCodesEnum getErrorAsEnum() {
+		return FileboxErrorCodesEnum.getError(mErrorMessageKey);
 	}
 
 }

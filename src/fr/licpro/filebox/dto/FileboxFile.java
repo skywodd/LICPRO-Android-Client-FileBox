@@ -29,7 +29,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * 
  * @author julien, Skywodd
  */
-public class FileboxFile extends FileboxDtoBase {
+public class FileboxFile extends FileboxServerError {
 
 	/**
 	 * Serialization UID.
@@ -96,46 +96,49 @@ public class FileboxFile extends FileboxDtoBase {
 		mLastModification = lastModification;
 	}
 
-	// TODO doc
-
+	/**
+	 * Get the filename.
+	 * 
+	 * @return The filename.
+	 */
 	public String getFilename() {
 		return mFilename;
 	}
 
-	public void setFilename(String filename) {
-		mFilename = filename;
-	}
-
+	/**
+	 * Get the file hash.
+	 * 
+	 * @return The file hash.
+	 */
 	public String getFileHash() {
 		return mFileHash;
 	}
 
-	public void setFileHash(String fileHash) {
-		mFileHash = fileHash;
-	}
-
+	/**
+	 * Return true if the file is a folder.
+	 * 
+	 * @return True if the file is a folder, false otherwise.
+	 */
 	public boolean isFolder() {
 		return mIsFolder;
 	}
 
-	public void setIsFolder(boolean isFolder) {
-		mIsFolder = isFolder;
-	}
-
+	/**
+	 * Get the mimetype.
+	 * 
+	 * @return The mimetype of the file, or null if unknown.
+	 */
 	public MimeTypeEnum getFileType() {
 		return mFileType;
 	}
 
-	public void setFileType(MimeTypeEnum fileType) {
-		mFileType = fileType;
-	}
-
+	/**
+	 * Get the last modification date.
+	 * 
+	 * @return The last modification date.
+	 */
 	public Date getLastModificationDate() {
 		return mLastModification;
-	}
-
-	public void setLastModificationDate(Date lastModification) {
-		mLastModification = lastModification;
 	}
 
 }
