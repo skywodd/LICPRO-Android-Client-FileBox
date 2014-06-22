@@ -28,7 +28,7 @@ import fr.licpro.filebox.R;
  * @author julien, Skywodd
  */
 public enum MimeTypeEnum {
-	
+
 	/**
 	 * Adobe PDF file.
 	 */
@@ -37,22 +37,22 @@ public enum MimeTypeEnum {
 	/**
 	 * Zip archive file.
 	 */
-	//ZIP("application/zip", "zip", R.drawable.ic_mimetype_zip), // FIXME
+	ZIP("application/zip", "zip", R.drawable.ic_mimetype_zip),
 
 	/**
 	 * MP3 audio file.
 	 */
-	//MP3("audio/mpeg", "mp3", R.drawable.ic_mimetype_mp3), // FIXME
+	MP3("audio/mpeg", "mp3", R.drawable.ic_mimetype_mp3),
 
 	/**
 	 * Microsoft Wave audio file.
 	 */
-	//WAVE("audio/wav", "wav", R.drawable.ic_mimetype_wav), // FIXME
+	WAVE("audio/wav", "wav", R.drawable.ic_mimetype_wav),
 
 	/**
 	 * Gif picture file.
 	 */
-	//GIF("image/gif", "gif", R.drawable.ic_mimetype_gif), // FIXME
+	GIF("image/gif", "gif", R.drawable.ic_mimetype_gif),
 
 	/**
 	 * Jpeg picture file.
@@ -67,7 +67,7 @@ public enum MimeTypeEnum {
 	/**
 	 * Comma separated values file.
 	 */
-	//CSV("text/csv", "csv", R.drawable.ic_mimetype_csv), // FIXME
+	CSV("text/csv", "csv", R.drawable.ic_mimetype_csv),
 
 	/**
 	 * HTML file.
@@ -77,22 +77,22 @@ public enum MimeTypeEnum {
 	/**
 	 * Plain text file.
 	 */
-	//TEXT("text/plain", "txt", R.drawable.ic_mimetype_txt), // FIXME
+	TEXT("text/plain", "txt", R.drawable.ic_mimetype_txt),
 
 	/**
 	 * XML document file.
 	 */
-	//XML("text/xml", "xml", R.drawable.ic_mimetype_xml), // FIXME
+	XML("text/xml", "xml", R.drawable.ic_mimetype_xml),
 
 	/**
 	 * MP4 video file.
 	 */
-	//MP4("video/mp4", "mp4", R.drawable.ic_mimetype_mp4), // FIXME
+	MP4("video/mp4", "mp4", R.drawable.ic_mimetype_mp4),
 
 	/**
 	 * Microsoft AVI video file.
 	 */
-	//AVI("video/x-msvideo", "avi", R.drawable.ic_mimetype_avi), // FIXME
+	AVI("video/x-msvideo", "avi", R.drawable.ic_mimetype_avi),
 
 	/**
 	 * Vcard contact file.
