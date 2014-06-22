@@ -17,6 +17,7 @@
 
 package fr.licpro.filebox.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.j256.ormlite.field.DataType;
@@ -32,7 +33,13 @@ import fr.licpro.filebox.constants.MimeTypeEnum;
  * @author Fabien Batteix
  */
 @DatabaseTable(tableName = "filebox_entries")
-public class FileboxEntryModel implements Comparable<FileboxEntryModel> {
+public class FileboxEntryModel implements Serializable,
+		Comparable<FileboxEntryModel> {
+
+	/**
+	 * Serialiation UID.
+	 */
+	private static final long serialVersionUID = 9002103950618184199L;
 
 	/**
 	 * The file hash. Also used as database ID.
