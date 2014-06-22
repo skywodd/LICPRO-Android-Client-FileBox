@@ -23,94 +23,94 @@ import fr.licpro.filebox.R;
 
 /**
  * Enumeration of all known file types and associated mime types. Each entry are
- * composed of a mime type and a file extension (DOS format).
+ * composed of a mimetype, a file extension (DOS format) and a thumbnail image.
  * 
  * @author julien, Skywodd
  */
 public enum MimeTypeEnum {
-
+	
 	/**
 	 * Adobe PDF file.
 	 */
-	PDF("application/pdf", "pdf", R.drawable.ic_launcher),
+	PDF("application/pdf", "pdf", R.drawable.ic_mimetype_pdf),
 
 	/**
 	 * Zip archive file.
 	 */
-	ZIP("application/zip", "zip", R.drawable.ic_launcher),
+	//ZIP("application/zip", "zip", R.drawable.ic_mimetype_zip), // FIXME
 
 	/**
 	 * MP3 audio file.
 	 */
-	MP3("audio/mpeg", "mp3", R.drawable.ic_launcher),
+	//MP3("audio/mpeg", "mp3", R.drawable.ic_mimetype_mp3), // FIXME
 
 	/**
 	 * Microsoft Wave audio file.
 	 */
-	WAVE("audio/wav", "wav", R.drawable.ic_launcher),
+	//WAVE("audio/wav", "wav", R.drawable.ic_mimetype_wav), // FIXME
 
 	/**
 	 * Gif picture file.
 	 */
-	GIF("image/gif", "gif", R.drawable.ic_launcher),
+	//GIF("image/gif", "gif", R.drawable.ic_mimetype_gif), // FIXME
 
 	/**
 	 * Jpeg picture file.
 	 */
-	JPEG("image/jpeg", "jpg", R.drawable.ic_launcher),
+	JPEG("image/jpeg", "jpg", R.drawable.ic_mimetype_jpg),
 
 	/**
 	 * Portable Network Graphics picture file.
 	 */
-	PNG("image/png", "png", R.drawable.ic_launcher),
+	PNG("image/png", "png", R.drawable.ic_mimetype_png),
 
 	/**
 	 * Comma separated values file.
 	 */
-	CSV("text/csv", "csv", R.drawable.ic_launcher),
+	//CSV("text/csv", "csv", R.drawable.ic_mimetype_csv), // FIXME
 
 	/**
 	 * HTML file.
 	 */
-	HTML("text/html", "html", R.drawable.ic_launcher),
+	HTML("text/html", "html", R.drawable.ic_mimetype_html),
 
 	/**
 	 * Plain text file.
 	 */
-	TEXT("text/plain", "txt", R.drawable.ic_launcher),
+	//TEXT("text/plain", "txt", R.drawable.ic_mimetype_txt), // FIXME
 
 	/**
 	 * XML document file.
 	 */
-	XML("text/xml", "xml", R.drawable.ic_launcher),
+	//XML("text/xml", "xml", R.drawable.ic_mimetype_xml), // FIXME
 
 	/**
 	 * MP4 video file.
 	 */
-	MP4("video/mp4", "mp4", R.drawable.ic_launcher),
+	//MP4("video/mp4", "mp4", R.drawable.ic_mimetype_mp4), // FIXME
 
 	/**
 	 * Microsoft AVI video file.
 	 */
-	AVI("video/x-msvideo", "avi", R.drawable.ic_launcher),
+	//AVI("video/x-msvideo", "avi", R.drawable.ic_mimetype_avi), // FIXME
 
 	/**
 	 * Vcard contact file.
 	 */
-	VCARD("text/vcard", "vcf", R.drawable.ic_launcher);
+	VCARD("text/vcard", "vcf", R.drawable.ic_mimetype_vcard);
 
 	/**
-	 * The file mime-type.
+	 * The file mimetype.
 	 */
 	private final String mMimeType;
 
 	/**
-	 * The file extension associated with the mime-type.
+	 * The file extension associated with the mimetype.
 	 */
 	private final String mExtension;
 
 	/**
-	 * The thumbnail image resource ID associated with the mime-type.
+	 * The thumbnail image resource ID associated with the mimetype.
 	 */
 	private final int mThumbnailResourceId;
 
@@ -118,9 +118,9 @@ public enum MimeTypeEnum {
 	 * Constructor of an element of MimeTypeEnum.
 	 * 
 	 * @param mimeType
-	 *            The file mime-type.
+	 *            The file mimetype.
 	 * @param extension
-	 *            The file extension associated with the mime-type.
+	 *            The file extension associated with the mimetype.
 	 */
 	private MimeTypeEnum(final String mimeType, final String extension,
 			final int thumbnailResourceId) {
