@@ -310,11 +310,26 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-
-		// TODO check for directory -> change current dir and reload OR call
-		// callback
+		Log.i(LOGCAT_TAG, "FilesListFragment::onItemClick()"); //$NON-NLS-1$
+		
+		/* Get the file entry */
+		FileboxEntryModel fileeEntry = mAdapter.getItem(position);
+		
+		/* Handle sub directory */
+		if (fileeEntry.isFolder()) {
+			
+			/* Change to the sub directory */
+			mCurrentDirectory = fileeEntry;
+			updateFileboxEntriesFromServer();
+			reloadFileboxEntries();
+			
+		} else {
+			
+			/* Open the file */
+			mCallback.onFileboxEntryClick(this, fileeEntry);
+		}
 	}
-
+	
 	/**
 	 * Broadcast receiver for all filebox entries change notifications.
 	 * 
