@@ -19,15 +19,16 @@ package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
+import fr.licpro.filebox.utilities.AuthTokenManager;
 
 /**
- * Method to Sync the startUp data
+ * Sync class for the authentication token. Store the authentication token in
+ * the shared preferences of the application.
+ * 
+ * @author Dimitri
  */
 public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 
@@ -37,44 +38,38 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	private static final long serialVersionUID = -3470928285752718451L;
 
 	/**
-	 * User Login.
+	 * Intent action string for the connection success broadcast.
 	 */
-	private String mLogin;
+	public static final String ACTION_CONNECTION_SUCCESS = "fr.licpro.filebox.CONNECTION_SUCCESS";
 
 	/**
-	 * User Password.
+	 * Intent action string for the connection error broadcast.
 	 */
-	private String mPassword;
+	public static final String ACTION_CONNECTION_ERROR = "fr.licpro.filebox.CONNECTION_ERROR";
 
 	/**
-	 * SharedPreferences for Token.
+	 * The user Login.
 	 */
-	private SharedPreferences mSharedPrefs;
+	private String mUserLogin;
 
 	/**
-	 * Token Preference Name's.
+	 * The user Password.
 	 */
-	public static final String TOKEN_PREF = "fr.licpro.filebox.service.sync.ConnectionSync.ConnectionToken";
+	private String mUserPassword;
 
 	/**
-	 * Token Preference success value.
+	 * Constructor of the ConnectionSync class.
+	 * 
+	 * @param userLogin
+	 *            The user login.
+	 * @param userPassword
+	 *            The user password.
 	 */
-	public static final String TOKEN_SUCCESS = "fr.licpro.filebox.service.sync.ConnectionSync.CONNECTION_TOKEN_SUCCESS";
-
-	/**
-	 * Token Preference error value.
-	 */
-	public static final String TOKEN_ERROR = "fr.licpro.filebox.service.sync.ConnectionSync.CONNECTION_TOKEN_ERROR";
-
-	
-	/*
-	 * Constructor.
-	 */
-	public ConnectionSync(String plogin,String ppassword) {
-		mLogin = plogin;
-		mPassword = ppassword;
+	public ConnectionSync(String userLogin, String userPassword) {
+		mUserLogin = userLogin;
+		mUserPassword = userPassword;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -83,9 +78,9 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 * .service.IRestClient)
 	 */
 	@Override
-	protected FileboxAuthToken execute(final IRestClient pRestClient)
+	protected FileboxAuthToken execute(final IRestClient restClient)
 			throws RetrofitError {
-		return pRestClient.getUserToken(mLogin, mPassword);
+		return restClient.getUserToken(mUserLogin, mUserPassword);
 	}
 
 	/*
@@ -96,15 +91,13 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	@Override
 	protected void onSuccess() {
 
-		Log.i("TRACE","onSuccess" );
-		mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-		SharedPreferences.Editor editor = mSharedPrefs.edit();
-		editor.putString(TOKEN_PREF, mData.getToken());
-		editor.commit();
-		
-		Intent it = new Intent(TOKEN_SUCCESS);
-		it.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
-		mContext.sendBroadcast(it);
+		/* Store the authentication token */
+		AuthTokenManager.storeAuthToken(mContext, mData.getToken());
+
+		/* Broadcast CONNECTION_SUCCESS event */
+		Intent intent = new Intent(ACTION_CONNECTION_SUCCESS);
+		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
+		mContext.sendBroadcast(intent);
 	}
 
 	/*
@@ -115,10 +108,12 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 */
 	@Override
 	protected void onError(Exception e) {
-		Log.i("TRACE","onError" );
-		Intent it = new Intent(TOKEN_ERROR);
-		it.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
-		mContext.sendBroadcast(it);
+
+		/* Broadcast CONNECTION_ERROR event */
+		Intent intent = new Intent(ACTION_CONNECTION_ERROR);
+		// TODO add error code/message as extra
+		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
+		mContext.sendBroadcast(intent);
 	}
 
 }
