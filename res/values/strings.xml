@@ -5,6 +5,7 @@
 <resources>
 
     <string name="app_name">FileBox</string>
+
     <string name="activity_title_files_list">My files</string>
     <string name="activity_title_file_details">File informations</string>
     
