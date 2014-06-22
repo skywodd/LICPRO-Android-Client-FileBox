@@ -17,9 +17,13 @@
 
 package fr.licpro.filebox.activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import fr.licpro.filebox.R;
+import fr.licpro.filebox.fragments.FileboxEntryDetailsFragment;
+import fr.licpro.filebox.models.FileboxEntryModel;
 
 /**
  * File details activity.
@@ -27,6 +31,11 @@ import fr.licpro.filebox.R;
  * @author skywodd
  */
 public class FileDetailsActivity extends AbstractBaseActivity {
+
+	/**
+	 * Intent extra for the target file entry to be displayed.
+	 */
+	public static final String EXTRA_FILEBOX_ENTRY = "fr.licpro.filebox.FILEBOX_ENTRY";
 
 	/*
 	 * (non-Javadoc)
@@ -40,8 +49,18 @@ public class FileDetailsActivity extends AbstractBaseActivity {
 
 		/* Set content view */
 		setContentView(R.layout.activity_file_details);
-	}
 
-	// TODO all display
+		/* Get the extra bundle */
+		Bundle extra = getIntent().getExtras();
+
+		/* Display the target file informations */
+		FragmentManager fm = getFragmentManager();
+		FileboxEntryDetailsFragment fragment = FileboxEntryDetailsFragment
+				.newInstance((FileboxEntryModel) extra
+						.getSerializable(EXTRA_FILEBOX_ENTRY));
+		FragmentTransaction fragmentTransaction = fm.beginTransaction();
+		fragmentTransaction.replace(android.R.id.content, fragment);
+		fragmentTransaction.commit();
+	}
 
 }

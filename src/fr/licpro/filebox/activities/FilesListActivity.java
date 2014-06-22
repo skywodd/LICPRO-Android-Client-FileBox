@@ -17,16 +17,21 @@
 
 package fr.licpro.filebox.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import fr.licpro.filebox.R;
+import fr.licpro.filebox.fragments.FilesListFragment;
+import fr.licpro.filebox.fragments.FilesListFragment.OnFileboxEntryClickListener;
+import fr.licpro.filebox.models.FileboxEntryModel;
 
 /**
  * Files list activity.
  * 
  * @author skywodd
  */
-public class FilesListActivity extends AbstractBaseActivity {
+public class FilesListActivity extends AbstractBaseActivity implements
+		OnFileboxEntryClickListener {
 
 	/*
 	 * (non-Javadoc)
@@ -42,6 +47,22 @@ public class FilesListActivity extends AbstractBaseActivity {
 		setContentView(R.layout.activity_files_list);
 	}
 
-	// TODO all display 
-	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.licpro.filebox.fragments.FilesListFragment.OnFileboxEntryClickListener
+	 * #onFileboxEntryClick(fr.licpro.filebox.fragments.FilesListFragment,
+	 * fr.licpro.filebox.models.FileboxEntryModel)
+	 */
+	@Override
+	public void onFileboxEntryClick(FilesListFragment dialog,
+			FileboxEntryModel entry) {
+
+		/* Display the file details in separate activity */
+		Intent intent = new Intent(this, FileDetailsActivity.class);
+		intent.putExtra(FileDetailsActivity.EXTRA_FILEBOX_ENTRY, entry);
+		startActivity(intent);
+	}
+
 }

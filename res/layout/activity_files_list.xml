@@ -2,11 +2,16 @@
 
 <!-- Files list activity layout. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    <!-- TODO -->
+    android:layout_height="match_parent" >
 
-</LinearLayout>
+    <!-- Files list fragment -->
+
+    <fragment
+        android:id="@+id/fragment_files_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="fr.licpro.filebox.fragments.FilesListFragment" />
+
+</merge>
