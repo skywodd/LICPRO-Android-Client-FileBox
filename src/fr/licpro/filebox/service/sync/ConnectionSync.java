@@ -110,7 +110,7 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> implements
 	 */
 	@Override
 	protected void onError(Exception e) {
-		Log.i(LOGCAT_TAG, "ConnectionSync::onError()");
+		Log.i(LOGCAT_TAG, "ConnectionSync::onError()", e);
 
 		/* Broadcast CONNECTION_ERROR event */
 		Intent intent = new Intent(ACTION_CONNECTION_ERROR);

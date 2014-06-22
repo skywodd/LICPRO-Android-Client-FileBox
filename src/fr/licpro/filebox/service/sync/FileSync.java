@@ -127,7 +127,7 @@ public class FileSync extends AbstractSync<FileboxFilesArray> implements
 	 */
 	@Override
 	protected void onError(Exception e) {
-		Log.i(LOGCAT_TAG, "FileSync::onError()");
+		Log.i(LOGCAT_TAG, "FileSync::onError()", e);
 
 		/* Broadcast SYNC_FILES_ERROR event */
 		Intent intent = new Intent(ACTION_SYNC_FILES_ERROR);
