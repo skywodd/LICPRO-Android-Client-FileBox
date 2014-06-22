@@ -4,6 +4,9 @@
 
 <resources>
 
+    <string  name="error_username_blank">Nom d\'utilisateur obligatoire</string>
+    <string  name="error_password_blank">Mot de passe obligatoire</string>
+    
     <string name="error_bad_request">Requéte incorrect</string>
     <string name="error_user_not_found">Utilisateur inconnu</string>
     <string name="error_token_invalid">Token invalide</string>

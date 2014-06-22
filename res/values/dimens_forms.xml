@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Form columns layout declaration (small screen version). -->
+
+<resources>
+
+    <!-- Number of columns in all standard forms (2 for inline, 1 for small screen) -->
+
+    <integer name="forms_columns_count">1</integer>
+
+</resources>

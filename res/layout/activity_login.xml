@@ -1,35 +1,84 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    style="@style/rootLayout"
-    android:layout_width="260dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="vertical" >
+<!-- Login activity layout -->
 
-    <TextView
-        android:id="@+id/tv_login_title"
-        android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LoginBackgroundLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false" >
+
+    <!-- Login form layout (responsive design) -->
+
+    <GridLayout
+        style="@style/LoginFormLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/app_name" />
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:columnCount="@integer/forms_columns_count"
+        android:useDefaultMargins="true" >
 
-    <EditText
-        android:id="@+id/tf_login_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"/>
+        <!-- Username form label -->
 
-    <EditText
-        android:id="@+id/tf_login_passwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="@integer/forms_columns_count"
+            android:text="@string/label_login_username" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_login" />
+        <!-- Username field -->
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/tf_login_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:hint="@string/hint_login_username"
+            android:inputType="text" />
+
+        <!-- Password form label -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="@integer/forms_columns_count"
+            android:text="@string/label_login_password" />
+
+        <!-- Password field -->
+
+        <EditText
+            android:id="@+id/tf_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:hint="@string/hint_login_password"
+            android:inputType="textPassword" />
+
+        <!-- Sub layout for the login button and waiting animation -->
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="@integer/forms_columns_count" >
+
+            <!-- Login button -->
+
+            <Button
+                android:id="@+id/btn_do_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_login" />
+
+            <!-- Waiting animation -->
+
+            <ProgressBar
+                android:id="@+id/pb_login_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true"
+                android:indeterminateOnly="true"
+                android:visibility="gone" />
+        </FrameLayout>
+    </GridLayout>
+
+</RelativeLayout>

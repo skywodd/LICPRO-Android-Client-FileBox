@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Login screen strings resource files (localized EN) -->
+
+<resources>
+
+    <string name="label_login_username">Username :</string>
+    <string name="hint_login_username">Username</string>
+    
+    <string name="label_login_password">Password :</string>
+    <string name="hint_login_password">Password</string>
+    
+    <string name="label_login">Login</string>
+    
+    <string name="msg_login_in_progress">Login in progress, stay still</string>
+    <string name="msg_login_failed">Login failed</string>
+
+</resources>
