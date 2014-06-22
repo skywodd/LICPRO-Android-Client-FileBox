@@ -22,19 +22,22 @@ import java.io.Serializable;
 import android.content.Context;
 
 /**
- * Interface for sync object
+ * Common API definition for all classes used to sync objects between the REST
+ * service and the application.
+ * 
+ * @author julien, skywodd
  */
 public interface ISync extends Serializable {
 
 	/**
-	 * Method used to execute sync
+	 * Method used to execute the sync request.
 	 * 
-	 * @param pContext
-	 *            application context
-	 * @param pRestClient
-	 *            rest client
-	 * @return
+	 * @param context
+	 *            The parent application context.
+	 * @param restClient
+	 *            The REST client instance.
+	 * @return True on success, false on error.
 	 */
-	boolean execute(final Context pContext, final IRestClient pRestClient);
+	boolean execute(final Context context, final IRestClient restClient);
 
 }
