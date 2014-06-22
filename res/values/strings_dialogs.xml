@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- String resources for dialogs (localized EN) -->
+
+<resources>
+
+    <string name="title_alert_confirm_delete_auth_token">Remove account credentials ?</string>
+    <string name="message_alert_confirm_delete_auth_token">You will need to log-in again at the next application startup.</string>
+
+</resources>

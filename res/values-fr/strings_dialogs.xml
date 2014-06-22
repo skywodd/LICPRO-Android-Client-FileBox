@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- String resources for dialogs (localized FR) -->
+
+<resources>
+
+    <string name="title_alert_confirm_delete_auth_token">Supprimer le compte ?</string>
+    <string name="message_alert_confirm_delete_auth_token">Vous serez obligez de vous reconnecter au prochain lancement de l\'application.</string>
+
+</resources>
