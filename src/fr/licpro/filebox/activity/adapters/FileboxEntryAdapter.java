@@ -109,9 +109,6 @@ public class FileboxEntryAdapter extends ArrayAdapter<FileboxEntryModel> {
 			LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 			convertView = inflater.inflate(mLayoutResourceId, parent, false);
 
-			/* Allow item click */
-			convertView.setClickable(true);
-
 			/* Create and populate a new view holder container */
 			holder = new FileboxEntryModelViewHolder();
 			holder.filename = (TextView) convertView

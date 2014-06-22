@@ -19,6 +19,7 @@ package fr.licpro.filebox.fragments;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -261,8 +262,19 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	private void reloadFileboxEntries() {
 
 		/* Refresh the list header */
-		mFilesListHeader.setText((mCurrentDirectory == null) ? "/"
-				: mCurrentDirectory.getFilename());
+		ArrayList<String> reversePath = new ArrayList<String>();
+		FileboxEntryModel cursor = mCurrentDirectory;
+		while (cursor != null) {
+			reversePath.add(cursor.getFilename());
+			cursor = cursor.getParent(); // FIXME not loaded dynamicaly by ORM-lite
+		}
+		StringBuilder absolutePath = new StringBuilder("/");
+		Collections.reverse(reversePath);
+		for (String path : reversePath) {
+			absolutePath.append(path);
+			absolutePath.append("/");
+		}
+		mFilesListHeader.setText(absolutePath.toString());
 
 		/* Get the FileboxEntryModel dao */
 		RuntimeExceptionDao<FileboxEntryModel, Integer> fileboxEntryModelRuntimeDao = getHelper()
@@ -311,25 +323,44 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Log.i(LOGCAT_TAG, "FilesListFragment::onItemClick()"); //$NON-NLS-1$
-		
+
+		/* Handle parent directory */
+		if (position == 0) {
+
+			/* Don't go upper if root */
+			if (mCurrentDirectory == null)
+				return;
+
+			/* Go to parent directory */
+			mCurrentDirectory = mCurrentDirectory.getParent();
+			updateFileboxEntriesFromServer();
+			reloadFileboxEntries();
+
+			/* Do nothing more */
+			return;
+		}
+
+		/* Fix position offset */
+		position--;
+
 		/* Get the file entry */
 		FileboxEntryModel fileeEntry = mAdapter.getItem(position);
-		
+
 		/* Handle sub directory */
 		if (fileeEntry.isFolder()) {
-			
+
 			/* Change to the sub directory */
 			mCurrentDirectory = fileeEntry;
 			updateFileboxEntriesFromServer();
 			reloadFileboxEntries();
-			
+
 		} else {
-			
+
 			/* Open the file */
 			mCallback.onFileboxEntryClick(this, fileeEntry);
 		}
 	}
-	
+
 	/**
 	 * Broadcast receiver for all filebox entries change notifications.
 	 * 
