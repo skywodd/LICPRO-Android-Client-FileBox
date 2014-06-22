@@ -14,4 +14,6 @@
     <string name="error_login_exist">Utilisateur existant</string>
     <string name="error_unknown_error">Erreur inconnue</string>
 
+    <string name="error_sync_error">Erreur de synchronisation</string>
+    
 </resources>

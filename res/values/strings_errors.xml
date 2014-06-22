@@ -13,5 +13,7 @@
     <string name="error_file_not_found">File not found</string>
     <string name="error_login_exist">Login exist</string>
     <string name="error_unknown_error">Unknown error</string>
+    
+    <string name="error_sync_error">Sync error</string>
 
 </resources>

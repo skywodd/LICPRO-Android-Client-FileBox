@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +41,8 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import fr.licpro.filebox.R;
 import fr.licpro.filebox.activity.adapters.FileboxEntryAdapter;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
@@ -104,6 +109,11 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	 * Currently displayed directory.
 	 */
 	private FileboxEntryModel mCurrentDirectory = null;
+
+	/**
+	 * Filebox entries modifications broadcast receiver.
+	 */
+	private FileboxEntriesBroadcastReceiver mFileboxEntriesBroadcastReceiver = new FileboxEntriesBroadcastReceiver();
 
 	/*
 	 * (non-Javadoc)
@@ -190,6 +200,37 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.app.Fragment#onResume()
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.i(LOGCAT_TAG, "CommunicationsFragment::onResume()");
+
+		/* Register the broadcast receiver for the service callback */
+		getActivity().registerReceiver(mFileboxEntriesBroadcastReceiver,
+				new IntentFilter(FileSync.ACTION_SYNC_FILES_SUCCESS));
+		getActivity().registerReceiver(mFileboxEntriesBroadcastReceiver,
+				new IntentFilter(FileSync.ACTION_SYNC_FILES_ERROR));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Fragment#onPause()
+	 */
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.i(LOGCAT_TAG, "CommunicationsFragment::onPause()");
+
+		/* Unregister the broadcast receiver */
+		getActivity().unregisterReceiver(mFileboxEntriesBroadcastReceiver);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.DialogFragment#onDetach()
 	 */
 	@Override
@@ -233,11 +274,12 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 
 		/* Create a query to list all files in the current directory */
 		try {
-			queryBuilder.where().eq(
-					"parentHashId",
-					(mCurrentDirectory == null) ? null : mCurrentDirectory
-							.getFileHash()); // FIXME null as value make all
-												// crash
+			if (mCurrentDirectory == null) {
+				queryBuilder.where().isNull("parentHashId");
+			} else {
+				queryBuilder.where().eq("parentHashId",
+						mCurrentDirectory.getFileHash());
+			}
 		} catch (SQLException e) {
 			throw new IllegalStateException(e);
 		}
@@ -268,12 +310,50 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
 
 		// TODO check for directory -> change current dir and reload OR call
 		// callback
 	}
 
-	// TODO broadcast receiver
+	/**
+	 * Broadcast receiver for all filebox entries change notifications.
+	 * 
+	 * @author skywodd
+	 */
+	class FileboxEntriesBroadcastReceiver extends BroadcastReceiver {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.content.BroadcastReceiver#onReceive(android.content.Context,
+		 * android.content.Intent)
+		 */
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.i(LOGCAT_TAG, "FileboxEntriesBroadcastReceiver::onReceive()");
+
+			/* Get the intent action */
+			String action = intent.getAction();
+
+			/* Handle the action */
+			if (action.equals(FileSync.ACTION_SYNC_FILES_SUCCESS)) {
+				Log.i(LOGCAT_TAG,
+						"FileboxEntriesBroadcastReceiver::onReceive(SYNC_FILES_SUCCESS)");
+
+				/* Reload all filebox entries from database */
+				reloadFileboxEntries();
+
+			} else if (action.equals(FileSync.ACTION_SYNC_FILES_ERROR)) {
+				Log.i(LOGCAT_TAG,
+						"FileboxEntriesBroadcastReceiver::onReceive(SYNC_FILES_ERROR)");
+
+				/* Display inline toast message */
+				Crouton.showText(getActivity(),
+						getString(R.string.error_sync_error), Style.ALERT);
+			}
+		}
+
+	}
 
 }
