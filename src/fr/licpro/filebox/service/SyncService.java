@@ -17,13 +17,15 @@
 
 package fr.licpro.filebox.service;
 
+import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
-import fr.licpro.filebox.constants.FileboxRuntimeConstants;
-import fr.licpro.filebox.service.json.JacksonConverter;
+import retrofit.client.Response;
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
+import fr.licpro.filebox.service.json.JacksonConverter;
 
 /**
  * Background synchronization service. Synchronize files and folders to and from
@@ -31,16 +33,16 @@ import android.util.Log;
  * 
  * @author Skywodd
  */
-public class SyncService extends IntentService implements
+public class SyncService extends IntentService implements ErrorHandler,
 		FileboxRuntimeConstants {
 
 	/**
-	 * Data in the intent
+	 * Intent extra for the sync class to be executed by the service.
 	 */
-	public static final String SYNC_CLASS_INTENT = "fr.licpro.filebox.syncData";
+	public static final String EXTRA_SYNC_CLASS = "fr.licpro.filebox.SYNC_CLASS";
 
 	/**
-	 * API REST client instance.
+	 * REST client instance.
 	 */
 	protected IRestClient mRestClient;
 
@@ -48,7 +50,7 @@ public class SyncService extends IntentService implements
 	 * Default constructor of the SyncService class.
 	 */
 	public SyncService() {
-		super("SyncService");
+		super("FileboxSyncService");
 	}
 
 	/*
@@ -59,11 +61,10 @@ public class SyncService extends IntentService implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.i(LOGCAT_TAG, "SyncService::onCreate()");
 
 		/* Build the REST adapter */
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				.setConverter(new JacksonConverter())//.setErrorHandler(null)
+				.setConverter(new JacksonConverter()).setErrorHandler(this)
 				.setLog(new AndroidLog(LOGCAT_TAG))
 				.setLogLevel(RestAdapter.LogLevel.BASIC).setEndpoint(API_URL)
 				.build();
@@ -78,14 +79,28 @@ public class SyncService extends IntentService implements
 	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
 	 */
 	@Override
-	protected void onHandleIntent(final Intent pIntent) {
-		Log.i(LOGCAT_TAG, "SyncService::onHandleIntent()");
+	protected void onHandleIntent(final Intent intent) {
 
 		/* Get the sync request */
-		ISync sync = (ISync) pIntent.getSerializableExtra(SYNC_CLASS_INTENT);
-		
+		ISync sync = (ISync) intent.getSerializableExtra(EXTRA_SYNC_CLASS);
+
 		/* Execute the sync request */
 		sync.execute(getApplicationContext(), mRestClient);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see retrofit.ErrorHandler#handleError(retrofit.RetrofitError)
+	 */
+	@Override
+	public Throwable handleError(RetrofitError cause) {
+		Response r = cause.getResponse();
+		if (r != null && r.getStatus() == 401) {
+			// return new UnauthorizedException(cause);
+			// TODO
+		}
+		return cause;
 	}
 
 }

@@ -23,70 +23,87 @@ import fr.licpro.filebox.service.IRestClient;
 import fr.licpro.filebox.service.ISync;
 
 /**
- * Abstract sync class
+ * Abstract base class for all sync classes implementations. Make the world of
+ * sync simpler and better.
+ * 
+ * @author julien, skywodd
  */
 public abstract class AbstractSync<T> implements ISync {
-	
+
 	/**
 	 * Serialization UID.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Class Tag for Logger
+	 * Result of the REST API call. Null if error.
 	 */
-	private static final String TAG = AbstractSync.class.getCanonicalName();
+	protected T mData = null;
 
 	/**
-	 * The data object
-	 */
-	protected T mData;
-
-	/**
-	 * Application Context
+	 * Current application context.
 	 */
 	protected transient Context mContext;
 
 	/**
-	 * Implement this method to perform your custom Task
+	 * Implement this method to perform your custom sync task.
 	 * 
 	 * Success and Error handling can be performed by overriding either
-	 * onSuccess() or the onError exception handler
+	 * onSuccess() or onError() functions.
+	 * 
+	 * @param restClient
+	 *            The REST client instance.
+	 * @return The sync data result, or null if error.
+	 * @throws RetrofitError
+	 *             on REST/HTTP error.
 	 */
-	protected abstract T execute(final IRestClient pRestClient)
+	protected abstract T execute(final IRestClient restClient)
 			throws RetrofitError;
 
-	/**
-	 * Method to start the current Sync
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param pRestClient
-	 *            the rest client
-	 * @return true if they are no error false otherwise
+	 * @see fr.licpro.filebox.service.ISync#execute(android.content.Context,
+	 * fr.licpro.filebox.service.IRestClient)
 	 */
 	@Override
-	public boolean execute(final Context pContext, final IRestClient pRestClient) {
-		boolean success = true;
-		mContext = pContext;
+	public boolean execute(final Context context, final IRestClient restClient) {
+
+		/* Store the context for later use */
+		mContext = context;
+
+		/* Catch RetroFit error */
 		try {
-			mData = execute(pRestClient);
+
+			/* Request data */
+			mData = execute(restClient);
+
+			/* Call onSucess callback */
 			onSuccess();
+
+			/* No error */
+			return true;
+
 		} catch (RetrofitError e) {
-			// TODO extract exception
+
+			/* Catch error and call onError() callback */
 			onError(e);
+
+			/* Oops */
+			return false;
 		}
-		return success;
 	}
 
 	/**
-	 * Success method called when no error was found
+	 * Callback method called when all goes right and data is ready to use.
 	 */
 	protected abstract void onSuccess();
 
 	/**
-	 * Error method called when exception was throw
+	 * Callback method called when something goes wrong during the data request.
 	 * 
 	 * @param e
-	 *            Exception
+	 *            The raised exception from RetroFit.
 	 */
 	protected abstract void onError(Exception e);
 
