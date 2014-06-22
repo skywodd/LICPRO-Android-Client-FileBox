@@ -17,11 +17,21 @@
 
 package fr.licpro.filebox.service.sync;
 
+import java.sql.SQLException;
+
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import retrofit.RetrofitError;
 import android.content.Intent;
 import android.util.Log;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
+import fr.licpro.filebox.dto.FileboxFile;
 import fr.licpro.filebox.dto.FileboxFilesArray;
+import fr.licpro.filebox.models.FileboxEntryModel;
+import fr.licpro.filebox.orm.DatabaseHelper;
 import fr.licpro.filebox.service.IRestClient;
 import fr.licpro.filebox.utilities.AuthTokenManager;
 
@@ -110,8 +120,45 @@ public class FileSync extends AbstractSync<FileboxFilesArray> implements
 	protected void onSuccess() {
 		Log.i(LOGCAT_TAG, "FileSync::onSuccess()");
 
-		/* Store all files in the database */
-		// TODO
+		/* Get the DAO helper */
+		DatabaseHelper helper = OpenHelperManager.getHelper(null,
+				DatabaseHelper.class);
+		RuntimeExceptionDao<FileboxEntryModel, Integer> fileboxEntryModelRuntimeDao = helper
+				.getFileboxEntryModelRuntimeDao();
+
+		/* Get parent directory instance */
+		FileboxEntryModel parent = null;
+		if (mTargetDirectoryHashId != null) {
+			QueryBuilder<FileboxEntryModel, Integer> queryBuilder = fileboxEntryModelRuntimeDao
+					.queryBuilder();
+
+			try {
+				queryBuilder.where().eq("hashId", mTargetDirectoryHashId);
+			} catch (SQLException e) {
+				throw new IllegalStateException(e);
+			}
+
+			PreparedQuery<FileboxEntryModel> preparedQuery = null;
+			try {
+				preparedQuery = queryBuilder.prepare();
+			} catch (SQLException e) {
+				throw new IllegalStateException(e);
+			}
+
+			parent = fileboxEntryModelRuntimeDao.queryForFirst(preparedQuery);
+		}
+
+		/* For each received file objects */
+		for (FileboxFile file : mData.getFilesList()) {
+
+			/* Store all files in the database */
+			fileboxEntryModelRuntimeDao.createOrUpdate(new FileboxEntryModel(
+					file.getFileHash(), parent, file.getFilename(), file
+							.isFolder(), file.getLastModificationDate()));
+		}
+
+		/* Release the helper */
+		OpenHelperManager.releaseHelper();
 
 		/* Broadcast SYNC_FILES_SUCCESS event */
 		Intent intent = new Intent(ACTION_SYNC_FILES_SUCCESS);
