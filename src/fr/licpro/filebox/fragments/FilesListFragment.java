@@ -236,7 +236,8 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 			queryBuilder.where().eq(
 					"parentHashId",
 					(mCurrentDirectory == null) ? null : mCurrentDirectory
-							.getFileHash()); // FIXME null as value make all crash
+							.getFileHash()); // FIXME null as value make all
+												// crash
 		} catch (SQLException e) {
 			throw new IllegalStateException(e);
 		}
@@ -269,8 +270,10 @@ public class FilesListFragment extends OrmLiteBaseFragment implements
 			long id) {
 		// TODO Auto-generated method stub
 
+		// TODO check for directory -> change current dir and reload OR call
+		// callback
 	}
 
-	// TODO broadcast receivier
+	// TODO broadcast receiver
 
 }

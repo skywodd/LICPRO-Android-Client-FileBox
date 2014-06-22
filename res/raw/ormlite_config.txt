@@ -1,5 +1,5 @@
 #
-# generated on 2014/06/22 01:11:29
+# generated on 2014/06/22 08:41:35
 #
 # --table-start--
 dataClass=fr.licpro.filebox.models.FileboxEntryModel
@@ -8,6 +8,7 @@ tableName=filebox_entries
 # --field-start--
 fieldName=mFileHash
 columnName=hashId
+canBeNull=false
 id=true
 # --field-end--
 # --field-start--
@@ -18,15 +19,18 @@ foreign=true
 # --field-start--
 fieldName=mFilename
 columnName=name
+canBeNull=false
 # --field-end--
 # --field-start--
 fieldName=mIsFolder
 columnName=isFolder
+canBeNull=false
 # --field-end--
 # --field-start--
 fieldName=mLastModification
 columnName=lastModification
 dataPersister=DATE
+canBeNull=false
 # --field-end--
 # --table-fields-end--
 # --table-end--

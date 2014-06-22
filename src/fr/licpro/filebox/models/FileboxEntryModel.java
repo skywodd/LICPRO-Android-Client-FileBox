@@ -44,7 +44,7 @@ public class FileboxEntryModel implements Serializable,
 	/**
 	 * The file hash. Also used as database ID.
 	 */
-	@DatabaseField(id = true, columnName = "hashId")
+	@DatabaseField(id = true, canBeNull = false, columnName = "hashId")
 	private String mFileHash;
 
 	/**
@@ -56,13 +56,13 @@ public class FileboxEntryModel implements Serializable,
 	/**
 	 * The filename.
 	 */
-	@DatabaseField(columnName = "name")
+	@DatabaseField(canBeNull = false, columnName = "name")
 	private String mFilename;
 
 	/**
 	 * True if the file is a folder.
 	 */
-	@DatabaseField(columnName = "isFolder")
+	@DatabaseField(canBeNull = false, columnName = "isFolder")
 	private boolean mIsFolder;
 
 	// File mimetype is determinate at runtime to allow more file types support
@@ -71,7 +71,7 @@ public class FileboxEntryModel implements Serializable,
 	/**
 	 * The last modification date (UNIX time stamp).
 	 */
-	@DatabaseField(columnName = "lastModification", dataType = DataType.DATE)
+	@DatabaseField(canBeNull = false, columnName = "lastModification", dataType = DataType.DATE)
 	private Date mLastModification;
 
 	/**
