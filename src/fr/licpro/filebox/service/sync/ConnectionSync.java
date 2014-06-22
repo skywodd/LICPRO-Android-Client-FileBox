@@ -19,6 +19,7 @@ package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
 import android.content.Intent;
+import android.util.Log;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
@@ -30,7 +31,8 @@ import fr.licpro.filebox.utilities.AuthTokenManager;
  * 
  * @author Dimitri
  */
-public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
+public class ConnectionSync extends AbstractSync<FileboxAuthToken> implements
+		FileboxRuntimeConstants {
 
 	/**
 	 * Serialization UID.
@@ -90,13 +92,13 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 */
 	@Override
 	protected void onSuccess() {
+		Log.i(LOGCAT_TAG, "ConnectionSync::onSuccess()");
 
 		/* Store the authentication token */
 		AuthTokenManager.storeAuthToken(mContext, mData.getToken());
 
 		/* Broadcast CONNECTION_SUCCESS event */
 		Intent intent = new Intent(ACTION_CONNECTION_SUCCESS);
-		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(intent);
 	}
 
@@ -108,11 +110,11 @@ public class ConnectionSync extends AbstractSync<FileboxAuthToken> {
 	 */
 	@Override
 	protected void onError(Exception e) {
+		Log.i(LOGCAT_TAG, "ConnectionSync::onError()");
 
 		/* Broadcast CONNECTION_ERROR event */
 		Intent intent = new Intent(ACTION_CONNECTION_ERROR);
 		// TODO add error code/message as extra
-		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(intent);
 	}
 

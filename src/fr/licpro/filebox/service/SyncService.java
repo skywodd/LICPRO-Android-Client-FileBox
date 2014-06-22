@@ -24,6 +24,7 @@ import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.service.json.JacksonConverter;
 
@@ -61,6 +62,7 @@ public class SyncService extends IntentService implements ErrorHandler,
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Log.i(LOGCAT_TAG, "SyncService::onCreate()");
 
 		/* Build the REST adapter */
 		RestAdapter restAdapter = new RestAdapter.Builder()
@@ -80,6 +82,7 @@ public class SyncService extends IntentService implements ErrorHandler,
 	 */
 	@Override
 	protected void onHandleIntent(final Intent intent) {
+		Log.i(LOGCAT_TAG, "SyncService::onHandleIntent()");
 
 		/* Get the sync request */
 		ISync sync = (ISync) intent.getSerializableExtra(EXTRA_SYNC_CLASS);
@@ -95,11 +98,18 @@ public class SyncService extends IntentService implements ErrorHandler,
 	 */
 	@Override
 	public Throwable handleError(RetrofitError cause) {
+		Log.i(LOGCAT_TAG, "SyncService::handleError()");
+
+		/* Get the HTTP response */
 		Response r = cause.getResponse();
+
+		/* Handle custom HTTP error */
 		if (r != null && r.getStatus() == 401) {
 			// return new UnauthorizedException(cause);
 			// TODO
 		}
+		
+		/* Return the cause */
 		return cause;
 	}
 
