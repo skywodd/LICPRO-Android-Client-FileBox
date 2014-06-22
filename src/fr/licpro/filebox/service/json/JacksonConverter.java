@@ -30,7 +30,8 @@ import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
 
 /**
- * Converter class from String to Jackson object.
+ * Converter class from JSON to Java objects. Allow the RetroFit library to
+ * use the powerful Jackson library to turn raw JSON answer into Java objects.
  * 
  * @author julien, Skywodd
  */
