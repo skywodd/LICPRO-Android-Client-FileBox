@@ -17,17 +17,18 @@
 
 package fr.licpro.filebox.activities;
 
-import fr.licpro.filebox.R;
-import fr.licpro.filebox.constants.FileboxRuntimeConstants;
-import fr.licpro.filebox.dialogs.DeleteAuthTokenConfirmationDialogFragment;
-import fr.licpro.filebox.dialogs.DeleteAuthTokenConfirmationDialogFragment.OnDeleteAuthTokenConfirmationListener;
-import fr.licpro.filebox.utilities.AuthTokenManager;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import fr.licpro.filebox.R;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
+import fr.licpro.filebox.dialogs.DeleteAuthTokenConfirmationDialogFragment;
+import fr.licpro.filebox.dialogs.DeleteAuthTokenConfirmationDialogFragment.OnDeleteAuthTokenConfirmationListener;
+import fr.licpro.filebox.utilities.AuthTokenManager;
 
 /**
  * Settings activity.
@@ -94,8 +95,12 @@ public class SettingsActivity extends Activity implements
 
 		/* Delete the authentication token */
 		AuthTokenManager.eraseAuthToken(this);
-		
-		// TODO close all activities and go to login activity
+
+		/* Close all activities and got to the login activity */
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(intent);
 	}
 
 }
