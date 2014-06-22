@@ -71,7 +71,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 	/**
 	 * Authentication token broadcast receiver
 	 */
-	private AuthTokenBroadcastReceiver tokenBroadcastReceiver = new AuthTokenBroadcastReceiver();
+	private AuthTokenBroadcastReceiver mAuthTokenBroadcastReceiver = new AuthTokenBroadcastReceiver();
 
 	/*
 	 * (non-Javadoc)
@@ -112,9 +112,9 @@ public class LoginActivity extends Activity implements OnClickListener,
 		Log.i(LOGCAT_TAG, "LoginActivity::onResume()");
 
 		/* Register the broadcast receiver for the service callback */
-		registerReceiver(tokenBroadcastReceiver, new IntentFilter(
+		registerReceiver(mAuthTokenBroadcastReceiver, new IntentFilter(
 				ConnectionSync.ACTION_CONNECTION_SUCCESS));
-		registerReceiver(tokenBroadcastReceiver, new IntentFilter(
+		registerReceiver(mAuthTokenBroadcastReceiver, new IntentFilter(
 				ConnectionSync.ACTION_CONNECTION_ERROR));
 	}
 
@@ -129,7 +129,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 		Log.i(LOGCAT_TAG, "LoginActivity::onPause()");
 
 		/* Unregister the broadcast receiver */
-		unregisterReceiver(tokenBroadcastReceiver);
+		unregisterReceiver(mAuthTokenBroadcastReceiver);
 	}
 
 	/*
@@ -242,7 +242,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 		 */
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.i(LOGCAT_TAG, "LoginActivity::onReceive()");
+			Log.i(LOGCAT_TAG, "AuthTokenBroadcastReceiver::onReceive()");
 
 			/* Get the intent action */
 			String action = intent.getAction();
