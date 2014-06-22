@@ -15,7 +15,7 @@
  * along with LICPRO-Android-Client-FileBox.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.licpro.filebox.activity;
+package fr.licpro.filebox.activities;
 
 import org.apache.commons.lang3.StringUtils;
 
