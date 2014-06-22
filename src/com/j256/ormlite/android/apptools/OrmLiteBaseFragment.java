@@ -25,6 +25,8 @@ import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 
+import fr.licpro.filebox.orm.DatabaseHelper;
+
 /**
  * Base class to use for fragments in Android.
  * 
@@ -40,10 +42,9 @@ import com.j256.ormlite.support.ConnectionSource;
  * 
  * @author skywodd
  */
-public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
-		extends Fragment {
+public abstract class OrmLiteBaseFragment extends Fragment {
 
-	private volatile H helper;
+	private volatile DatabaseHelper helper;
 	private volatile boolean created = false;
 	private volatile boolean destroyed = false;
 	private static Logger logger = LoggerFactory
@@ -52,7 +53,7 @@ public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
 	/**
 	 * Get a helper for this action.
 	 */
-	public H getHelper() {
+	public DatabaseHelper getHelper() {
 		if (helper == null) {
 			if (!created) {
 				throw new IllegalStateException(
@@ -84,7 +85,9 @@ public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if (helper == null) {
-			helper = getHelperInternal(getActivity());
+			// helper = getHelperInternal(getActivity());
+			helper = OpenHelperManager.getHelper(getActivity(),
+					DatabaseHelper.class);
 			created = true;
 		}
 		super.onCreate(savedInstanceState);
@@ -98,7 +101,8 @@ public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		releaseHelper(helper);
+		// releaseHelper(helper);
+		OpenHelperManager.releaseHelper();
 		destroyed = true;
 	}
 
@@ -115,9 +119,10 @@ public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
 	 * well.
 	 * </p>
 	 */
-	protected H getHelperInternal(Context context) {
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		H newHelper = (H) OpenHelperManager.getHelper(context);
+	protected DatabaseHelper getHelperInternal(Context context) {
+		@SuppressWarnings("deprecation")
+		DatabaseHelper newHelper = (DatabaseHelper) OpenHelperManager
+				.getHelper(context);
 		logger.trace("{}: got new helper {} from OpenHelperManager", this,
 				newHelper);
 		return newHelper;
@@ -133,7 +138,7 @@ public abstract class OrmLiteBaseFragment<H extends OrmLiteSqliteOpenHelper>
 	 * override the {@link #getHelperInternal(Context)} method as well.
 	 * </p>
 	 */
-	protected void releaseHelper(H helper) {
+	protected void releaseHelper(DatabaseHelper helper) {
 		OpenHelperManager.releaseHelper();
 		logger.trace("{}: helper {} was released, set to null", this, helper);
 		this.helper = null;
