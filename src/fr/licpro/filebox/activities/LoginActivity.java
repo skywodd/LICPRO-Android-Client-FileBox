@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -211,9 +212,17 @@ public class LoginActivity extends Activity implements OnClickListener,
 	private void forwardToFilesListActivity() {
 		Log.i(LOGCAT_TAG, "LoginActivity::forwardToFilesListActivity()");
 
-		// TODO open the files list activity
-		Log.e(FileboxRuntimeConstants.LOGCAT_TAG,
-				"TODO forwardToFilesListActivity()");
+		/* Open the files list activity according to the real screen width */
+		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+		float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+		if (dpWidth >= 480) {
+			startActivity(new Intent(this, FilesListWithDetailsActivity.class));
+		} else {
+			startActivity(new Intent(this, FilesListActivity.class));
+		}
+		
+		/* Close the login screen */
+		finish();
 	}
 
 	/**
