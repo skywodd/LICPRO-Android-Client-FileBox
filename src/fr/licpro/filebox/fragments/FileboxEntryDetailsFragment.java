@@ -17,9 +17,8 @@
 
 package fr.licpro.filebox.fragments;
 
-import java.io.Serializable;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,8 @@ import android.widget.TextView;
 import com.j256.ormlite.android.apptools.OrmLiteBaseFragment;
 
 import fr.licpro.filebox.R;
+import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.models.FileboxEntryModel;
-import fr.licpro.filebox.orm.DatabaseHelper;
 
 /**
  * FileboxEntry details fragment. Display informations about a given
@@ -38,53 +37,88 @@ import fr.licpro.filebox.orm.DatabaseHelper;
  * 
  * @author Dimitri
  */
-public class FileboxEntryDetailsFragment extends
-		OrmLiteBaseFragment<DatabaseHelper> {
+public class FileboxEntryDetailsFragment extends OrmLiteBaseFragment implements
+		FileboxRuntimeConstants {
 
 	/**
-	 * File argument to get the file to display.
+	 * Intent extra for the target file entry to be displayed.
 	 */
-	public static final String EXTRA_FILEBOX_ENTRY = "file_detail_entry";
+	public static final String EXTRA_FILEBOX_ENTRY = "fr.licpro.filebox.FILEBOX_ENTRY";
 
+	/**
+	 * Constructor of the FileboxEntryDetailsFragment class.
+	 * 
+	 * @param file
+	 *            The filebox entry to be displayed.
+	 * @return A FileboxEntryDetailsFragment displaying the given file entry.
+	 */
+	public static FileboxEntryDetailsFragment newInstance(FileboxEntryModel file) {
+
+		/* Create a new empty fragment */
+		FileboxEntryDetailsFragment f = new FileboxEntryDetailsFragment();
+
+		/* Populate all required extra */
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRA_FILEBOX_ENTRY, file);
+		f.setArguments(args);
+
+		/* Return the populated fragment */
+		return f;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Fragment#onCreateView(android.view.LayoutInflater,
+	 * android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.i(LOGCAT_TAG, "FileboxEntryDetailsFragment::onCreateView()"); //$NON-NLS-1$
 
-		View fragmentView = inflater.inflate(R.layout.fragment_file_details, container,
+		/* Inflate the fragment layout */
+		View view = inflater.inflate(R.layout.fragment_file_details, container,
 				false);
-		// Inflate the layout for this fragment
+
+		/* Return the inflated layout */
+		return view;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Fragment#onActivityCreated(android.os.Bundle)
+	 */
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		Log.i(LOGCAT_TAG, "CommunicationsFragment::onActivityCreated()"); //$NON-NLS-1$
+
+		/* Get the fragment layout */
+		View view = getView();
+
+		/* Get the extra bundle */
 		Bundle bundle = getArguments();
 
-		// here is your list array
+		/* Get the filebox entry to be displayed */
 		FileboxEntryModel file = (FileboxEntryModel) bundle
 				.getSerializable(EXTRA_FILEBOX_ENTRY);
 
-		View imgView = fragmentView.findViewById(R.id.img_file_mimetype);
-
-		((ImageView) imgView).setImageResource(file.getFileType()
-				.getThumbnailResourceId());
-		View tvFileName = fragmentView.findViewById(R.id.tv_file_name);
-		((TextView) tvFileName).setText(file.getFilename());
-
-		View tvFileType = fragmentView.findViewById(R.id.tv_file_type);
-		((TextView) tvFileType).setText(file.getFileType().getMimeType());
-
-		View tvFileLastModifivation = fragmentView
+		/* Get all widgets instances */
+		ImageView typeThumbnail = (ImageView) view
+				.findViewById(R.id.img_file_mimetype);
+		TextView filename = (TextView) view.findViewById(R.id.tv_file_name);
+		TextView fileType = (TextView) view.findViewById(R.id.tv_file_type);
+		TextView lastModificationDate = (TextView) view
 				.findViewById(R.id.tv_file_last_modification);
-		((TextView) tvFileLastModifivation).setText(file
-				.getLastModificationDate().toString());
 
-		return fragmentView;
+		/* Populate the view */
+		typeThumbnail.setImageResource(file.getFileType()
+				.getThumbnailResourceId());
+		filename.setText(file.getFilename());
+		fileType.setText(file.getFileType().getMimeType());
+		lastModificationDate.setText(file.getLastModificationDate().toString());
 	}
 
-	public static FileboxEntryDetailsFragment newInstance(FileboxEntryModel file) {
-		FileboxEntryDetailsFragment f = new FileboxEntryDetailsFragment();
-
-		// Supply index input as an argument.
-		Bundle args = new Bundle();
-		args.putSerializable(EXTRA_FILEBOX_ENTRY, (Serializable) file);
-		f.setArguments(args);
-
-		return f;
-	}
 }
