@@ -18,9 +18,7 @@
 package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.dto.FileboxFilesArray;
@@ -33,7 +31,8 @@ import fr.licpro.filebox.utilities.AuthTokenManager;
  * 
  * @author Dimitri
  */
-public class FileSync extends AbstractSync<FileboxFilesArray> {
+public class FileSync extends AbstractSync<FileboxFilesArray> implements
+		FileboxRuntimeConstants {
 
 	/**
 	 * Serialization UID.
@@ -109,13 +108,13 @@ public class FileSync extends AbstractSync<FileboxFilesArray> {
 	 */
 	@Override
 	protected void onSuccess() {
+		Log.i(LOGCAT_TAG, "FileSync::onSuccess()");
 
 		/* Store all files in the database */
 		// TODO
 
 		/* Broadcast SYNC_FILES_SUCCESS event */
 		Intent intent = new Intent(ACTION_SYNC_FILES_SUCCESS);
-		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(intent);
 
 	}
@@ -128,11 +127,11 @@ public class FileSync extends AbstractSync<FileboxFilesArray> {
 	 */
 	@Override
 	protected void onError(Exception e) {
+		Log.i(LOGCAT_TAG, "FileSync::onError()");
 
 		/* Broadcast SYNC_FILES_ERROR event */
 		Intent intent = new Intent(ACTION_SYNC_FILES_ERROR);
 		// TODO add error code/message as extra
-		intent.setPackage(FileboxRuntimeConstants.BROADCAST_FILTER);
 		mContext.sendBroadcast(intent);
 	}
 
