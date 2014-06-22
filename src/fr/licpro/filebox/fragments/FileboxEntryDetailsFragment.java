@@ -17,7 +17,20 @@
 
 package fr.licpro.filebox.fragments;
 
-import android.app.Fragment;
+import java.io.Serializable;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.j256.ormlite.android.apptools.OrmLiteBaseFragment;
+
+import fr.licpro.filebox.R;
+import fr.licpro.filebox.models.FileboxEntryModel;
+import fr.licpro.filebox.orm.DatabaseHelper;
 
 /**
  * FileboxEntry details fragment. Display informations about a given
@@ -25,6 +38,53 @@ import android.app.Fragment;
  * 
  * @author Dimitri
  */
-public class FileboxEntryDetailsFragment extends Fragment {
+public class FileboxEntryDetailsFragment extends
+		OrmLiteBaseFragment<DatabaseHelper> {
 
+	/**
+	 * File argument to get the file to display.
+	 */
+	public static final String EXTRA_FILEBOX_ENTRY = "file_detail_entry";
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View fragmentView = inflater.inflate(R.layout.fragment_file_details, container,
+				false);
+		// Inflate the layout for this fragment
+		Bundle bundle = getArguments();
+
+		// here is your list array
+		FileboxEntryModel file = (FileboxEntryModel) bundle
+				.getSerializable(EXTRA_FILEBOX_ENTRY);
+
+		View imgView = fragmentView.findViewById(R.id.img_file_mimetype);
+
+		((ImageView) imgView).setImageResource(file.getFileType()
+				.getThumbnailResourceId());
+		View tvFileName = fragmentView.findViewById(R.id.tv_file_name);
+		((TextView) tvFileName).setText(file.getFilename());
+
+		View tvFileType = fragmentView.findViewById(R.id.tv_file_type);
+		((TextView) tvFileType).setText(file.getFileType().getMimeType());
+
+		View tvFileLastModifivation = fragmentView
+				.findViewById(R.id.tv_file_last_modification);
+		((TextView) tvFileLastModifivation).setText(file
+				.getLastModificationDate().toString());
+
+		return fragmentView;
+	}
+
+	public static FileboxEntryDetailsFragment newInstance(FileboxEntryModel file) {
+		FileboxEntryDetailsFragment f = new FileboxEntryDetailsFragment();
+
+		// Supply index input as an argument.
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRA_FILEBOX_ENTRY, (Serializable) file);
+		f.setArguments(args);
+
+		return f;
+	}
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top|center_horizontal"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/img_file_mimetype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/img_detail_name"
+        android:gravity="center"
+        android:paddingTop="50dp"
+        android:src="@drawable/ic_mimetype_unknown" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_name" />
+
+    <TextView
+        android:id="@+id/tv_file_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_name_unknown" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_type" />
+
+    <TextView
+        android:id="@+id/tv_file_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_type_unknown" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_modification_last" />
+
+    <TextView
+        android:id="@+id/tv_file_last_modification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="@string/label_file_modification_last_unknown" />
+
+    <Button
+        android:id="@+id/btn_open_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_file_open" />
+
+</LinearLayout>
