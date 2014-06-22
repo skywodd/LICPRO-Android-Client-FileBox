@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Default strings resource files (localized FR) -->
+
+<resources>
+
+    <string name="app_name">FileBox</string>
+    <string name="activity_title_files_list">Mes fichiers</string>
+    <string name="activity_title_file_details">Information sur le fichier</string>
+    
+    <string name="action_settings">Paramétres</string>
+    <string name="action_about">A propos</string>
+    
+    <string name="label_remove_credentials">Supprimer les informations du compte</string>
+    
+</resources>
