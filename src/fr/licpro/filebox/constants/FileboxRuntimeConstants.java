@@ -30,11 +30,6 @@ public interface FileboxRuntimeConstants {
 	public static final String LOGCAT_TAG = "FILEBOX";
 
 	/**
-	 * Filter for Broadcast.
-	 */
-	public static final String BROADCAST_FILTER = "fr.licpro.filebox";
-
-	/**
 	 * Target FileBox server URL or IP address.
 	 */
 	public static final String API_URL = "http://91.121.95.210:443/rest/";
