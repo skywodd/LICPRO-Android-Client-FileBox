@@ -18,7 +18,6 @@
 package fr.licpro.filebox.orm;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,7 +29,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import fr.licpro.filebox.R;
-import fr.licpro.filebox.constants.MimeTypeEnum;
 import fr.licpro.filebox.models.FileboxEntryModel;
 
 /**
@@ -42,16 +40,24 @@ import fr.licpro.filebox.models.FileboxEntryModel;
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-	/** Name of the database for the application */
+	/**
+	 * Name of the database for the application
+	 */
 	private static final String DATABASE_NAME = "FileBoxClient.db";
 
-	/** Database version number */
+	/**
+	 * Database version number
+	 */
 	private static final int DATABASE_VERSION = 1;
 
-	/** Filebox entries DAO */
+	/**
+	 * Filebox entries DAO
+	 */
 	private Dao<FileboxEntryModel, Integer> fileboxEntriesDao = null;
 
-	/** Filebox entries DAO (runtime edition) */
+	/**
+	 * Filebox entries DAO (runtime edition)
+	 */
 	private RuntimeExceptionDao<FileboxEntryModel, Integer> fileboxEntriesRuntimeDao = null;
 
 	/**
@@ -80,13 +86,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		RuntimeExceptionDao<FileboxEntryModel,Integer> dao = getFileboxEntryModelRuntimeDao();
-		FileboxEntryModel entry = new FileboxEntryModel(null, "test.txt", "", false, MimeTypeEnum.TEXT, new Date());
-		dao.create(entry);
-		FileboxEntryModel entry2 = new FileboxEntryModel(null, "toto", "", true, null, new Date());
-		dao.create(entry2);
-		FileboxEntryModel entry3 = new FileboxEntryModel(entry2, "test2.txt", "", false, MimeTypeEnum.TEXT, new Date());
-		dao.create(entry3);
 	}
 
 	/*
