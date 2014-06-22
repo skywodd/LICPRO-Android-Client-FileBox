@@ -20,7 +20,7 @@ package fr.licpro.filebox.service;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.PUT;
-import retrofit.http.Part;
+import retrofit.http.Path;
 import retrofit.http.Query;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.dto.FileboxFilesArray;
@@ -57,7 +57,7 @@ public interface IRestClient {
 	 * @return The list of files in the root directory, or an error code if any.
 	 */
 	@GET("/file/{token}")
-	FileboxFilesArray getUserFiles(@Part("token") String token,
+	FileboxFilesArray getUserFiles(@Path("token") String token,
 			@Query("date") long timestamp);
 
 	/**
@@ -73,8 +73,8 @@ public interface IRestClient {
 	 *         code if any.
 	 */
 	@GET("/file/{token}/{hashId}")
-	FileboxFilesArray getUserFilesInSubDirectory(@Part("token") String token,
-			@Part("hashId") String directoryHashId,
+	FileboxFilesArray getUserFilesInSubDirectory(@Path("token") String token,
+			@Path("hashId") String directoryHashId,
 			@Query("date") long timestamp);
 
 	/**
@@ -90,7 +90,7 @@ public interface IRestClient {
 	 *         code if any.
 	 */
 	@GET("/file/{token}/{hashId}")
-	Response getUserFileContent(@Part("token") String token,
-			@Part("hashId") String fileHashId, @Query("date") long timestamp);
+	Response getUserFileContent(@Path("token") String token,
+			@Path("hashId") String fileHashId, @Query("date") long timestamp);
 
 }
