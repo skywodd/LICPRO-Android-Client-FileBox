@@ -19,6 +19,7 @@ package fr.licpro.filebox.models;
 
 import java.util.Date;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -31,14 +32,18 @@ import fr.licpro.filebox.constants.MimeTypeEnum;
  * @author Fabien Batteix
  */
 @DatabaseTable(tableName = "filebox_entries")
-public class FileboxEntryModel {
+public class FileboxEntryModel implements Comparable<FileboxEntryModel> {
 
-	/** The Filebox entries ID */
-	@DatabaseField(generatedId = true, columnName = "id")
-	private long mId;
+	/**
+	 * The file hash. Also used as database ID.
+	 */
+	@DatabaseField(id = true, columnName = "hashId")
+	private String mFileHash;
 
-	/** The parent Filebox entry ID, or nul if no parent (root directory) */
-	@DatabaseField(foreign = true, foreignColumnName = "id", canBeNull = true, columnName = "parentId")
+	/**
+	 * The parent Filebox entry ID, or null if no parent (root directory)
+	 */
+	@DatabaseField(foreign = true, canBeNull = true, columnName = "parentHashId")
 	private FileboxEntryModel mParent;
 
 	/**
@@ -48,27 +53,18 @@ public class FileboxEntryModel {
 	private String mFilename;
 
 	/**
-	 * The file hash.
-	 */
-	@DatabaseField(columnName = "hashId")
-	private String mFileHash;
-
-	/**
 	 * True if the file is a folder.
 	 */
 	@DatabaseField(columnName = "isFolder")
 	private boolean mIsFolder;
 
-	/**
-	 * The file type.
-	 */
-	@DatabaseField(columnName = "fileType", canBeNull = true)
-	private MimeTypeEnum mFileType;
+	// File mimetype is determinate at runtime to allow more file types support
+	// in future update.
 
 	/**
 	 * The last modification date (UNIX time stamp).
 	 */
-	@DatabaseField(columnName = "lastModification")
+	@DatabaseField(columnName = "lastModification", dataType = DataType.DATE)
 	private Date mLastModification;
 
 	/**
@@ -88,74 +84,119 @@ public class FileboxEntryModel {
 	 *            The file hash.
 	 * @param isFolder
 	 *            Set to true if the file is a folder false otherwise.
-	 * @param mimeType
-	 *            The file type.
 	 * @param lastModification
 	 *            The last modification date (UNIX time stamp).
 	 */
-	public FileboxEntryModel(FileboxEntryModel parent, String filename,
-			String fileHash, Boolean isFolder, MimeTypeEnum mimeType,
-			Date lastModification) {
+	public FileboxEntryModel(String fileHash, FileboxEntryModel parent,
+			String filename, Boolean isFolder, Date lastModification) {
 		mParent = parent;
 		mFilename = filename;
 		mFileHash = fileHash;
 		mIsFolder = isFolder;
-		mFileType = mimeType;
 		mLastModification = lastModification;
 	}
 
-	// TODO doc
-
-	public long getId() {
-		return mId;
-	}
-
-	public FileboxEntryModel getParent() {
-		return mParent;
-	}
-
-	public void setParent(FileboxEntryModel parent) {
-		mParent = parent;
-	}
-
-	public String getFilename() {
-		return mFilename;
-	}
-
-	public void setFilename(String filename) {
-		mFilename = filename;
-	}
-
+	/**
+	 * Get the file hash ID.
+	 * 
+	 * @return The file hash ID.
+	 */
 	public String getFileHash() {
 		return mFileHash;
 	}
 
-	public void setFileHash(String fileHash) {
-		mFileHash = fileHash;
+	/**
+	 * Get the parent folder.
+	 * 
+	 * @return The parent folder, or null if no parent (root directory).
+	 */
+	public FileboxEntryModel getParent() {
+		return mParent;
 	}
 
+	/**
+	 * Get the filename.
+	 * 
+	 * @return The filename.
+	 */
+	public String getFilename() {
+		return mFilename;
+	}
+
+	/**
+	 * Return true if the file is a folder.
+	 * 
+	 * @return True if the file is a folder, false otherwise.
+	 */
 	public boolean isFolder() {
 		return mIsFolder;
 	}
 
-	public void setIsFolder(boolean isFolder) {
-		mIsFolder = isFolder;
-	}
-
+	/**
+	 * Get the file mimetype.
+	 * 
+	 * @return The file mimetype, or null if the file type is unknown.
+	 */
 	public MimeTypeEnum getFileType() {
-		return mFileType;
+		return MimeTypeEnum.getType(mFilename);
 	}
 
-	public void setFileType(MimeTypeEnum fileType) {
-		mFileType = fileType;
-	}
-
+	/**
+	 * Get the last modification date.
+	 * 
+	 * @return The last modification date.
+	 */
 	public Date getLastModificationDate() {
 		return mLastModification;
 	}
 
-	public void setLastModificationDate(Date lastModification) {
-		mLastModification = lastModification;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(FileboxEntryModel another) {
+
+		/* The file name is used to sort files in alpha order */
+		return mFilename.compareTo(another.mFilename);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		/* It's me, mario */
+		if (obj == this) {
+			return true;
+		}
+
+		/* Check against null and type */
+		if (obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+
+		/* Ok, let's cast */
+		FileboxEntryModel fem = (FileboxEntryModel) obj;
+
+		/* Two files are equals if the hashdId is the same */
+		return mFileHash.equals(fem.mFileHash);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		/* The file hash is used as hash code */
+		return mFileHash.hashCode();
 	}
 
 }
