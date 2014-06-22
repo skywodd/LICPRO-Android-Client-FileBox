@@ -17,11 +17,11 @@
 
 package fr.licpro.filebox.dto;
 
-import fr.licpro.filebox.constants.MimeTypeEnum;
-
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import fr.licpro.filebox.constants.MimeTypeEnum;
 
 /**
  * Data transfer object for a file. The file is indexed by his filename and his

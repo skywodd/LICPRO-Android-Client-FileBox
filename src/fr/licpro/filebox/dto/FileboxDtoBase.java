@@ -18,6 +18,7 @@
 package fr.licpro.filebox.dto;
 
 import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;

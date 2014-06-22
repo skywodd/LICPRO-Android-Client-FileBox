@@ -18,13 +18,10 @@
 package fr.licpro.filebox.service.sync;
 
 import retrofit.RetrofitError;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Trace;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import fr.licpro.filebox.R;
 import fr.licpro.filebox.constants.FileboxRuntimeConstants;
 import fr.licpro.filebox.dto.FileboxAuthToken;
 import fr.licpro.filebox.service.IRestClient;
