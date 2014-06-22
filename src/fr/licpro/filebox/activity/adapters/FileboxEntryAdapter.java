@@ -18,6 +18,7 @@
 package fr.licpro.filebox.activity.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -150,6 +151,19 @@ public class FileboxEntryAdapter extends ArrayAdapter<FileboxEntryModel> {
 
 		/* Return the populated view */
 		return convertView;
+	}
+
+	/**
+	 * Replace the current data by a new set of data.
+	 * 
+	 * @param newData
+	 *            The new data.
+	 */
+	public void setData(List<FileboxEntryModel> newData) {
+
+		/* Clear all current data and store the new ones */
+		clear();
+		addAll(newData);
 	}
 
 }
